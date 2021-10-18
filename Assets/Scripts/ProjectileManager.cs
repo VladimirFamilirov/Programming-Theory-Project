@@ -12,12 +12,12 @@ public class ProjectileManager : MonoBehaviour
     private float repeatRate = 6;
     void Start()
     {
-        InvokeRepeating("SpawnProjectile", startDelay, repeatRate);
+       InvokeRepeating("SpawnProjectile", startDelay, repeatRate);
     }
 
     void Update()
     {
-        
+        spawnPos = new Vector3(Random.Range(-13, 14), 1, -24);
     }
 
     private void SpawnProjectile()
