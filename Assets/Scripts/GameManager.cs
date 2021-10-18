@@ -5,20 +5,29 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     public Text TextEndGame;
     public Text textPlayerName;
+    public int score;
+    public bool isActive;
     void Start()
     {
+        Instance = this;
+        score = 0;
+        isActive = true;
        GetPlayerName();
     }
 
     
     void Update()
     {
-        
+        textPlayerName.text = CurrentScoreAndName();
     }
-
-    private void ShowGameScore()
+    private string CurrentScoreAndName()
+    {
+        return ScoreManager.Instance.currentPlayerName + ": " + score;
+    }
+    private void ShowEndGameScore()
     {
         TextEndGame.text = ScoreManager.Instance.ConcatText();
         TextEndGame.gameObject.SetActive(true);

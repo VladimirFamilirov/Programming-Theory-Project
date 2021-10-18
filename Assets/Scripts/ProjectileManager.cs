@@ -24,4 +24,12 @@ public class ProjectileManager : MonoBehaviour
     {
         Instantiate(projectilePrefab, spawnPos, projectilePrefab.transform.rotation);
     }
+
+    IEnumerator SpawnProjectile()
+    {
+        while (GameManager.Instance.isActive)
+        {
+
+        }
+    }
 }
