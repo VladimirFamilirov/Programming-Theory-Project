@@ -12,24 +12,24 @@ public class ProjectileManager : MonoBehaviour
     private float repeatRate = 6;
     void Start()
     {
-       InvokeRepeating("SpawnProjectile", startDelay, repeatRate);
+        StartCoroutine(SpawnProjectile());
     }
 
     void Update()
     {
-        spawnPos = new Vector3(Random.Range(-13, 14), 1, -24);
+        
     }
 
-    private void SpawnProjectile()
-    {
-        Instantiate(projectilePrefab, spawnPos, projectilePrefab.transform.rotation);
-    }
 
     IEnumerator SpawnProjectile()
     {
         while (GameManager.Instance.isActive)
         {
-
+            yield return new WaitForSeconds(repeatRate);
+            spawnPos = new Vector3(Random.Range(-13, 14), 1, -24);
+            Instantiate(projectilePrefab, spawnPos, projectilePrefab.transform.rotation);
+            GameManager.Instance.score++;
+            repeatRate -= 0.3f;
         }
     }
 }

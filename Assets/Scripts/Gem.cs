@@ -6,6 +6,7 @@ using UnityEngine;
 {
     public  override void DestroyObj()      // POLYMORPHISM
     {
+        GameManager.Instance.gemsCount--;
         Destroy(gameObject);
     }
 }

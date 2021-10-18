@@ -15,7 +15,7 @@ public class ScoreManager : MonoBehaviour
 
     public InputField inputPlayerName;
     
-    public int currentPlayerScore { get; private set; } = 0;        // ENCAPSULATION
+    public int currentPlayerScore { get;  set; } = 0;        // ENCAPSULATION
     public string currentPlayerName { get; private set; }
 
     private void Awake()
@@ -53,11 +53,16 @@ public class ScoreManager : MonoBehaviour
                     BestPlayers[i] = player;
                     i++;
                 }
+                else
+                {
+                    BestPlayers[i].Name = "";
+                    BestPlayers[i].Score = 0;
+                }
             }
         }
         
     }
-    private void SaveBestScore()
+    public void SaveBestScore()
     {
         SavedScore savedScore = new SavedScore();
         int i = 0;
@@ -74,7 +79,28 @@ public class ScoreManager : MonoBehaviour
         File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
     }
 
-
+    public void ArrangeScoreList()
+    {
+        Player bufferPlayer = new Player();
+        bufferPlayer.Name = currentPlayerName;
+        bufferPlayer.Score = currentPlayerScore;
+        for (int i = 2; i >= 0; i--)
+        {
+            if (BestPlayers[i].Score < bufferPlayer.Score)
+            {
+                if (i == 2)
+                {
+                    BestPlayers[i] = bufferPlayer;
+                }
+                else
+                {
+                    BestPlayers[i + 1] = BestPlayers[i];
+                    BestPlayers[i] = bufferPlayer;
+                }
+            }
+            
+        }
+    }
     
     public string ConcatText()
     {
@@ -94,8 +120,8 @@ public class ScoreManager : MonoBehaviour
 }
 class Player
 {
-    public string Name { get; private set; }
-    public int Score { get; private set; }
+    public string Name { get;  set; }
+    public int Score { get;  set; }
 }
 
 [System.Serializable]

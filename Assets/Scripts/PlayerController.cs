@@ -25,41 +25,41 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        
-        
+
+
         if (freeHands == true)
         {
 
-        GrabSmth();
+            GrabSmth();
         }
         else
         {
 
-        ReleaseHands();
+            ReleaseHands();
         }
     }
     private void RotateToCursor()
     {
         if (objectToGrab != null)
         {//mousePos = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
-        mousePos = Input.mousePosition;
+            mousePos = Input.mousePosition;
 
-        var brickPos = Camera.main.WorldToScreenPoint(objectToGrab.transform.position);
-        var angleMouseToBrick = Mathf.Atan2(brickPos.x - mousePos.x, brickPos.y - mousePos.y) * Mathf.Rad2Deg;
-        playerRotAxis.transform.rotation = Quaternion.Euler(new Vector3(0, angleMouseToBrick, 0));
+            var brickPos = Camera.main.WorldToScreenPoint(objectToGrab.transform.position);
+            var angleMouseToBrick = Mathf.Atan2(brickPos.x - mousePos.x, brickPos.y - mousePos.y) * Mathf.Rad2Deg;
+            playerRotAxis.transform.rotation = Quaternion.Euler(new Vector3(0, angleMouseToBrick, 0));
 
-        playerPos = Camera.main.WorldToScreenPoint(playerRb.position);
-        angleMouseToPlayer = Mathf.Atan2(playerPos.x - mousePos.x, playerPos.y - mousePos.y) * Mathf.Rad2Deg;
-        playerRotAxis.transform.rotation = Quaternion.Euler(new Vector3(0, angleMouseToPlayer, 0));
+            playerPos = Camera.main.WorldToScreenPoint(playerRb.position);
+            angleMouseToPlayer = Mathf.Atan2(playerPos.x - mousePos.x, playerPos.y - mousePos.y) * Mathf.Rad2Deg;
+            playerRotAxis.transform.rotation = Quaternion.Euler(new Vector3(0, angleMouseToPlayer, 0));
 
         }
-        
+
     }
     private void GrabSmth()
     {
         if (objectToGrab != null && Input.GetKeyDown(KeyCode.Space))
         {
-            
+
             objectToGrab.transform.parent = playerRotAxis.gameObject.transform;
 
             freeHands = false;
@@ -82,14 +82,18 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        RotateToCursor();
-        
-        
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
+        if (GameManager.Instance.isActive)
+        {
+            RotateToCursor();
 
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalInput);
-        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput);
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+
+            transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalInput);
+            transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput);
+
+        }
+
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -97,6 +101,6 @@ public class PlayerController : MonoBehaviour
         {
             objectToGrab = collision.gameObject;
         }
-        
+
     }
 }
