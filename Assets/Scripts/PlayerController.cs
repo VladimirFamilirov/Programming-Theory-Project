@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject != null && collision.gameObject.CompareTag("Brick") && freeHands == true)
+        if (collision.gameObject != null && (collision.gameObject.CompareTag("Brick") || collision.gameObject.CompareTag("Gem")) && freeHands == true)
         {
             objectToGrab = collision.gameObject;
         }

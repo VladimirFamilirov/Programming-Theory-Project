@@ -2,29 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Brick : MonoBehaviour
+ class Brick : DestroyableObj    // INHERITANCE
 {
     public GameObject brickPrefab;
     private Vector3 newBrickOne;
     private Vector3 newBrickTwo;
-    void Update()
-    {
-        
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Projectile" && !gameObject.name.Contains("Clone"))
-        {
-            breakBrick();
-        }
-        else if (collision.gameObject.tag == "Projectile")
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void breakBrick()
+    
+    public override void DestroyObj()   // POLYMORPHISM
     {
         newBrickOne.z = gameObject.transform.localScale.z / Random.Range(2,3);
         newBrickTwo.z = gameObject.transform.localScale.z - newBrickOne.z;

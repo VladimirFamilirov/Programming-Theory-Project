@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public Text textPlayerName;
     void Start()
     {
-       // GetPlayerName();
+       GetPlayerName();
     }
 
     
