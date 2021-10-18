@@ -9,7 +9,7 @@ public class ScoreManager : MonoBehaviour
 {
     private Player[] BestPlayers = new Player[3];
 
-    public Text TextEndGame;
+    
 
     public static ScoreManager Instance;
 
@@ -36,6 +36,8 @@ public class ScoreManager : MonoBehaviour
         currentPlayerName = inputPlayerName.text;
         SceneManager.LoadScene("Game");
     }
+
+
     private void LoadBestScore()
     {
         string path = Application.persistentDataPath + "/savefie.json";
@@ -61,19 +63,20 @@ public class ScoreManager : MonoBehaviour
         int i = 0;
         foreach (var player in BestPlayers)
         {
-            if (i != 3)
+            if (player != null && i != 3)
             {
                 savedScore.BestScore[i] = player;
                 i++;
             }
         }
+
+        string json = JsonUtility.ToJson(savedScore);
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
     }
-    private void ShowGameScore()
-    {
-       TextEndGame.text = ConcatText();
-       TextEndGame.gameObject.SetActive(true);
-    }
-    private string ConcatText()
+
+
+    
+    public string ConcatText()
     {
         string text = "Your Score: " + currentPlayerScore + "\n\nBest players:\n";
         int i = 1;
