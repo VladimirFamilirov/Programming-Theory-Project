@@ -17,7 +17,7 @@ public class ProjectileManager : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 
 
@@ -26,10 +26,14 @@ public class ProjectileManager : MonoBehaviour
         while (GameManager.Instance.isActive)
         {
             yield return new WaitForSeconds(repeatRate);
-            spawnPos = new Vector3(Random.Range(-13, 14), 1, -24);
-            Instantiate(projectilePrefab, spawnPos, projectilePrefab.transform.rotation);
-            GameManager.Instance.score++;
-            repeatRate -= 0.3f;
+            if (GameManager.Instance.isActive)
+            {
+                spawnPos = new Vector3(Random.Range(-13, 14), 1, -24);
+                Instantiate(projectilePrefab, spawnPos, projectilePrefab.transform.rotation);
+                GameManager.Instance.score++;
+                repeatRate -= 0.3f;
+            }
+
         }
     }
 }

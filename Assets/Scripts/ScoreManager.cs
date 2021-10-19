@@ -40,7 +40,7 @@ public class ScoreManager : MonoBehaviour
 
     public void LoadBestScore()
     {
-        string path = Application.persistentDataPath + "/savefie.json";
+        string path = Application.persistentDataPath + "/savefile.json";
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
@@ -75,6 +75,7 @@ public class ScoreManager : MonoBehaviour
     public void SaveBestScore()
     {
         SavedScore<Player> savedScore = new SavedScore<Player>();
+        
         int i = 0;
         foreach (var player in BestPlayers)
         {
@@ -91,23 +92,21 @@ public class ScoreManager : MonoBehaviour
     public void ArrangeScoreList()
     {
         Player bufferPlayer = new Player();
-        bufferPlayer.Name = currentPlayerName;
-        bufferPlayer.Score = currentPlayerScore;
+        Player currentPlayer = new Player();
+        currentPlayer.Name = currentPlayerName;
+        currentPlayer.Score = currentPlayerScore;
         for (int i = 2; i >= 0; i--)
         {
-            if (BestPlayers[i].Score < bufferPlayer.Score)
+            if (BestPlayers[i].Score < currentPlayer.Score)
             {
-                if (i == 2)
-                {
-                    BestPlayers[i] = bufferPlayer;
-                }
-                else
-                {
-                    BestPlayers[i + 1] = BestPlayers[i];
-                    BestPlayers[i] = bufferPlayer;
-                }
+                if(i != 2) BestPlayers[i + 1] = bufferPlayer;
+                bufferPlayer = BestPlayers[i];
+                BestPlayers[i] = currentPlayer;
             }
-            
+            else
+            {
+                break;
+            }
         }
     }
     
@@ -130,12 +129,12 @@ public class ScoreManager : MonoBehaviour
 [System.Serializable]
 class Player
 {
-    public string Name { get;  set; }
-    public int Score { get;  set; }
+    public string Name;
+    public int Score;
 }
 
 [System.Serializable]
-class SavedScore<Player>
+public class SavedScore<Player>
 {
     public Player[] BestScore = new Player[3];
 

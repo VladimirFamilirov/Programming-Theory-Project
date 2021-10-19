@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         textPlayerName.text = CurrentScoreAndName();
-        CheckGems();
+        if(isActive) CheckGems();
     }
     private void CheckGems()
     {
