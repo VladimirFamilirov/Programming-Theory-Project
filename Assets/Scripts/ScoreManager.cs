@@ -28,7 +28,7 @@ public class ScoreManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        LoadBestScore();
+        
 
     }
     public void StartGame()
@@ -38,13 +38,13 @@ public class ScoreManager : MonoBehaviour
     }
 
 
-    private void LoadBestScore()
+    public void LoadBestScore()
     {
         string path = Application.persistentDataPath + "/savefie.json";
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            SavedScore data = JsonUtility.FromJson<SavedScore>(json);
+            SavedScore<Player> data = JsonUtility.FromJson<SavedScore<Player>>(json);
             int i = 0;
             foreach (var player in data.BestScore)
             {
@@ -55,16 +55,26 @@ public class ScoreManager : MonoBehaviour
                 }
                 else
                 {
-                    BestPlayers[i].Name = "";
+                    BestPlayers[i].Name = "None";
                     BestPlayers[i].Score = 0;
                 }
+            }
+        }
+        else
+        {
+            Player newPlayer = new Player();
+            newPlayer.Name = "None";
+            newPlayer.Score = 0;
+            for (int i = 2; i >= 0; i--)
+            {
+                BestPlayers[i] = newPlayer;
             }
         }
         
     }
     public void SaveBestScore()
     {
-        SavedScore savedScore = new SavedScore();
+        SavedScore<Player> savedScore = new SavedScore<Player>();
         int i = 0;
         foreach (var player in BestPlayers)
         {
@@ -75,8 +85,7 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-        string json = JsonUtility.ToJson(savedScore);
-        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", savedScore.SaveToStr());
     }
 
     public void ArrangeScoreList()
@@ -110,7 +119,7 @@ public class ScoreManager : MonoBehaviour
         {
             if (bestPlayer != null)
             {
-                text += i + ". " + bestPlayer.Name + " - " + bestPlayer.Score;
+                text += i + ". " + bestPlayer.Name + " - " + bestPlayer.Score + "\n";
                 i++;
             }
         }
@@ -118,6 +127,7 @@ public class ScoreManager : MonoBehaviour
         return text;
     }
 }
+[System.Serializable]
 class Player
 {
     public string Name { get;  set; }
@@ -125,7 +135,12 @@ class Player
 }
 
 [System.Serializable]
-class SavedScore
+class SavedScore<Player>
 {
-    public Player[] BestScore;
+    public Player[] BestScore = new Player[3];
+
+    public string SaveToStr()
+    {
+        return JsonUtility.ToJson(this);
+    }
 }

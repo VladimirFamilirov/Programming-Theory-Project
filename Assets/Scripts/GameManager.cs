@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     }
     private void ShowEndGameScore()
     {
+        ScoreManager.Instance.LoadBestScore();
         ScoreManager.Instance.currentPlayerScore = score;
         ScoreManager.Instance.ArrangeScoreList();
         TextEndGame.text = ScoreManager.Instance.ConcatText();
