@@ -16,7 +16,7 @@ public class ScoreManager : MonoBehaviour
     public InputField inputPlayerName;
     
     public int currentPlayerScore { get;  set; } = 0;        // ENCAPSULATION
-    public string currentPlayerName { get; private set; }
+    public string currentPlayerName { get;  set; }
 
     private void Awake()
     {
@@ -31,11 +31,11 @@ public class ScoreManager : MonoBehaviour
         
 
     }
-    public void StartGame()
+   /* public void StartGame()
     {
         currentPlayerName = inputPlayerName.text;
         SceneManager.LoadScene("Game");
-    }
+    } */
 
 
     public void LoadBestScore()
